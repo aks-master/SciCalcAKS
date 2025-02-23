@@ -8,9 +8,9 @@ WORKDIR /app
 COPY target/SciCalcAKS-1.0-SNAPSHOT.jar /app/SciCalcAKS-1.0-SNAPSHOT.jar
 
 # Command to run the JAR file
-# CMD ["java", "--enable-preview", "-jar", "SciCalcAKS-1.0-SNAPSHOT.jar"]
+CMD ["java", "--enable-preview", "-jar", "SciCalcAKS-1.0-SNAPSHOT.jar"]
 
 #using entrypoint
-ENTRYPOINT ["java", "--enable-preview", "-jar", "/app/SciCalcAKS-1.0-SNAPSHOT.jar"]
+# ENTRYPOINT ["java", "--enable-preview", "-jar", "/app/SciCalcAKS-1.0-SNAPSHOT.jar"]
 
 
