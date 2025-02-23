@@ -37,8 +37,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
-                        sh "docker tag ${DOCKER_IMAGE_NAME} aks-master/${DOCKER_IMAGE_NAME}:latest"
-                        sh "docker push aks-master/${DOCKER_IMAGE_NAME}"
+                        sh "docker tag ${DOCKER_IMAGE_NAME} aks00798/${DOCKER_IMAGE_NAME}:latest"
+                        sh "docker push aks00798/${DOCKER_IMAGE_NAME}"
                     }
                 }
             }
