@@ -10,5 +10,6 @@
       command: docker rm -f sci-calc-aks
       ignore_errors: yes
 
-    - name: Run the application container in interactive mode
-      command: docker run --rm -it --name sci-calc-aks aks00798/sci-calc-aks
+    - name: Run the application container in detached mode
+      command: docker run --rm -d --name sci-calc-aks aks00798/sci-calc-aks
+
