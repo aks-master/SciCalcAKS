@@ -8,14 +8,17 @@ pipeline {
         DOCKER_IMAGE_NAME = 'sci-calc-aks'
         DOCKER_HUB_USER = 'aks00798'  // Update with your Docker Hub username
         GITHUB_REPO_URL = 'https://github.com/aks-master/SciCalcAKS'
+        GIT_CREDENTIALS_ID = 'githubPAT'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    git branch: 'main', url: "${GITHUB_REPO_URL}"
-                }
+                steps {
+                git branch: 'main',
+                    credentialsId: "${GIT_CREDENTIALS_ID}",
+                    url: 'https://github.com/aks-master/SciCalcAKS.git'
+            }
             }
         }
 
