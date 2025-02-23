@@ -3,9 +3,42 @@
   hosts: localhost
   become: yes
   tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Remove conflicting packages
+      apt:
+        name: containerd
+        state: absent
+      ignore_errors: yes
+
+    - name: Install required dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker’s official GPG key
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+    - name: Add Docker APT repository
+      shell: |
+        add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      args:
+        warn: false
+
+    - name: Update APT cache after adding Docker repo
+      apt:
+        update_cache: yes
+
     - name: Install Docker
       apt:
-        name: docker.io
+        name: docker-ce
         state: present
 
     - name: Ensure Docker service is running
