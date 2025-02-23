@@ -21,6 +21,5 @@
       command: docker rm -f sci-calc-aks
       ignore_errors: yes
 
-    - name: Run the application container
-      command: docker run -d --name sci-calc-aks -p 8080:8080 aks-master/sci-calc-aks:latest
-
+    - name: Run the application container in interactive mode
+      command: docker run --rm -it --name sci-calc-aks aks00798/sci-calc-aks
