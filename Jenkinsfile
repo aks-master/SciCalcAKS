@@ -57,23 +57,11 @@ pipeline {
     }
 
     post {
-        success {
+        always {
             emailext(
-                subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                subject: "📢 Build Completed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
-                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> succeeded.</p>
-                    <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
-                """,
-                to: "amit33301@gmail.com, abhishekse@outlook.com",
-                mimeType: "text/html"
-            )
-        }
-
-        failure {
-            emailext(
-                subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> failed.</p>
+                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> finished.</p>
                     <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
                 """,
                 to: "amit33301@gmail.com, abhishekse@outlook.com",
