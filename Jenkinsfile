@@ -17,6 +17,14 @@ pipeline {
             }
         }
 
+        stage('Build with Maven') {
+            steps {
+                script {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -30,7 +38,7 @@ pipeline {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
                         sh "docker tag ${DOCKER_IMAGE_NAME} aks-master/${DOCKER_IMAGE_NAME}:latest"
-                        sh "docker push aks-master/${DOCKER_IMAGE_NAME}:latest"
+                        sh "docker push aks-master/${DOCKER_IMAGE_NAME}"
                     }
                 }
             }
@@ -50,27 +58,15 @@ pipeline {
 
     post {
         success {
-            script {
-                emailext(
-                    subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                    body: """<p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> succeeded.</p>
-                             <p><a href="${env.BUILD_URL}">Click here for logs</a></p>""",
-                    to: "amit33301@gmail.com",
-                    mimeType: "text/html"
-                )
-            }
+            emailext subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} succeeded.\nLogs: ${env.BUILD_URL}",
+                     to: "amit33301@gmail.com"
         }
 
         failure {
-            script {
-                emailext(
-                    subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                    body: """<p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> failed.</p>
-                             <p><a href="${env.BUILD_URL}">Click here for logs</a></p>""",
-                    to: "amit33301@gmail.com",
-                    mimeType: "text/html"
-                )
-            }
+            emailext subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nLogs: ${env.BUILD_URL}",
+                     to: "amit33301@gmail.com"
         }
     }
 }
