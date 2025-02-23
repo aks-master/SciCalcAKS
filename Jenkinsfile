@@ -3,28 +3,16 @@ pipeline {
     triggers { 
         githubPush() 
     }
-    
     environment {
         DOCKER_IMAGE_NAME = 'sci-calc-aks'
-        DOCKER_HUB_USER = 'aks00798'  // Update with your Docker Hub username
         GITHUB_REPO_URL = 'https://github.com/aks-master/SciCalcAKS'
-        GIT_CREDENTIALS_ID = 'githubPAT'
     }
 
     stages {
         stage('Checkout') {
-                steps {
-                    git branch: 'main',
-                    credentialsId: "${GIT_CREDENTIALS_ID}",
-                    url: 'https://github.com/aks-master/SciCalcAKS.git'
-            }
-            }
-        }
-
-        stage('Build with Maven') {
             steps {
                 script {
-                    sh 'mvn clean install'
+                    git branch: 'main', url: "${GITHUB_REPO_URL}"
                 }
             }
         }
@@ -40,10 +28,9 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'DockerHubCred', variable: 'DOCKERHUB_TOKEN')]) {
-                        sh "echo \$DOCKERHUB_TOKEN | docker login -u ${DOCKER_HUB_USER} --password-stdin"
-                        sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_USER}/${DOCKER_IMAGE_NAME}:latest"
-                        sh "docker push ${DOCKER_HUB_USER}/${DOCKER_IMAGE_NAME}:latest"
+                    docker.withRegistry('', 'DockerHubCred') {
+                        sh "docker tag ${DOCKER_IMAGE_NAME} aks-master/${DOCKER_IMAGE_NAME}:latest"
+                        sh "docker push aks-master/${DOCKER_IMAGE_NAME}:latest"
                     }
                 }
             }
@@ -63,15 +50,27 @@ pipeline {
 
     post {
         success {
-            emailext subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} succeeded.\nLogs: ${env.BUILD_URL}",
-                     to: "amit33301@gmail.com"
+            script {
+                emailext(
+                    subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """<p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> succeeded.</p>
+                             <p><a href="${env.BUILD_URL}">Click here for logs</a></p>""",
+                    to: "amit33301@gmail.com",
+                    mimeType: "text/html"
+                )
+            }
         }
 
         failure {
-            emailext subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nLogs: ${env.BUILD_URL}",
-                     to: "amit33301@gmail.com"
+            script {
+                emailext(
+                    subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """<p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> failed.</p>
+                             <p><a href="${env.BUILD_URL}">Click here for logs</a></p>""",
+                    to: "amit33301@gmail.com",
+                    mimeType: "text/html"
+                )
+            }
         }
     }
 }
