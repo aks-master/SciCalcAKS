@@ -1,6 +1,6 @@
-// package org.example;
-// import java.lang.Math;
-// import java.util.Scanner;
+package org.example;
+import java.lang.Math;
+import java.util.Scanner;
 
 // public class Calculator {
 
