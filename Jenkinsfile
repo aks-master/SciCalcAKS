@@ -65,9 +65,9 @@ pipeline {
                     <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
                 """,
                 to: "amit33301@gmail.com, abhishekse@outlook.com",
-                replyTo: "noreply@yourdomain.com",
+                
                 mimeType: "text/html",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+                
             )
         }
 
@@ -79,9 +79,9 @@ pipeline {
                     <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
                 """,
                 to: "amit33301@gmail.com, abhishekse@outlook.com",
-                replyTo: "noreply@yourdomain.com",
+                
                 mimeType: "text/html",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+                
             )
         }
     }
