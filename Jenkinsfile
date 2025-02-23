@@ -30,13 +30,13 @@ pipeline {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
                         sh "docker tag ${DOCKER_IMAGE_NAME} aks-master/${DOCKER_IMAGE_NAME}:latest"
-                        sh "docker push aks-master/${DOCKER_IMAGE_NAME}"
+                        sh "docker push aks-master/${DOCKER_IMAGE_NAME}:latest"
                     }
                 }
             }
         }
 
-       stage('Run Ansible Deployment') {
+        stage('Run Ansible Deployment') {
             steps {
                 script {
                     ansiblePlaybook(
@@ -45,20 +45,32 @@ pipeline {
                     )
                 }
             }
+        }
     }
 
     post {
         success {
-            emailext subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} succeeded.\nLogs: ${env.BUILD_URL}",
-                     to: "amit33301@gmail.com"
+            script {
+                emailext(
+                    subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """<p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> succeeded.</p>
+                             <p><a href="${env.BUILD_URL}">Click here for logs</a></p>""",
+                    to: "amit33301@gmail.com",
+                    mimeType: "text/html"
+                )
+            }
         }
 
         failure {
-            emailext subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nLogs: ${env.BUILD_URL}",
-                     to: "amit33301@gmail.com"
+            script {
+                emailext(
+                    subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """<p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> failed.</p>
+                             <p><a href="${env.BUILD_URL}">Click here for logs</a></p>""",
+                    to: "amit33301@gmail.com",
+                    mimeType: "text/html"
+                )
+            }
         }
     }
 }
-
