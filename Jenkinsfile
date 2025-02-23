@@ -58,15 +58,13 @@ pipeline {
 
     post {
         always {
-            emailext(
-                subject: "📢 Build Completed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> finished.</p>
-                    <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
-                """,
-                to: "amit33301@gmail.com, abhishekse@outlook.com",
-                mimeType: "text/html"
-            )
+            script {
+                mail(
+                    subject: "📢 Build Completed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """Build ${env.JOB_NAME} #${env.BUILD_NUMBER} finished.\nView Logs: ${env.BUILD_URL}console""",
+                    to: "amit33301@gmail.com, abhishekse@outlook.com"
+                )
+            }
         }
     }
 }
