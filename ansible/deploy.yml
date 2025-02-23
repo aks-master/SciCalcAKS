@@ -15,7 +15,7 @@
         enabled: yes
 
     - name: Pull latest Docker image
-      command: docker pull aks-master/sci-calc-aks:latest
+      command: docker pull aks00798/sci-calc-aks:latest
 
     - name: Stop and remove existing container if running
       command: docker rm -f sci-calc-aks
