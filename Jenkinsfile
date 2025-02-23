@@ -58,15 +58,31 @@ pipeline {
 
     post {
         success {
-            emailext subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} succeeded.\nLogs: ${env.BUILD_URL}",
-                     to: "amit33301@gmail.com"
+            emailext(
+                subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> succeeded.</p>
+                    <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
+                """,
+                to: "amit33301@gmail.com, abhishekse@outlook.com",
+                replyTo: "noreply@yourdomain.com",
+                mimeType: "text/html",
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+            )
         }
 
         failure {
-            emailext subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\nLogs: ${env.BUILD_URL}",
-                     to: "amit33301@gmail.com"
+            emailext(
+                subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> failed.</p>
+                    <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
+                """,
+                to: "amit33301@gmail.com, abhishekse@outlook.com",
+                replyTo: "noreply@yourdomain.com",
+                mimeType: "text/html",
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+            )
         }
     }
 }
