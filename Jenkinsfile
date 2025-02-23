@@ -13,9 +13,8 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
                 steps {
-                git branch: 'main',
+                    git branch: 'main',
                     credentialsId: "${GIT_CREDENTIALS_ID}",
                     url: 'https://github.com/aks-master/SciCalcAKS.git'
             }
