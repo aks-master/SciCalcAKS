@@ -10,7 +10,7 @@ public class CalculatorTest {
     // Test for square root function
     @Test
     public void testSquareRootFunc() {
-        assertEquals(121.0, calculator.squareRootFunc(11), 0.0001); // sqrt(16) = 4
+        assertEquals(11.0, calculator.squareRootFunc(121), 0.0001); // sqrt(16) = 4
         assertEquals(0.0, calculator.squareRootFunc(0), 0.0001);  // sqrt(0) = 0
     }
 

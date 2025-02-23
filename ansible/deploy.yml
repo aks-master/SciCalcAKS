@@ -1,0 +1,26 @@
+---
+- name: Deploy SciCalcAKS Application
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull latest Docker image
+      command: docker pull aks-master/sci-calc-aks:latest
+
+    - name: Stop and remove existing container if running
+      command: docker rm -f sci-calc-aks
+      ignore_errors: yes
+
+    - name: Run the application container
+      command: docker run -d --name sci-calc-aks -p 8080:8080 aks-master/sci-calc-aks:latest
+
