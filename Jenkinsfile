@@ -3,8 +3,10 @@ pipeline {
     triggers { 
         githubPush() 
     }
+    
     environment {
         DOCKER_IMAGE_NAME = 'sci-calc-aks'
+        DOCKER_HUB_USER = 'amit33301'  // Update with your Docker Hub username
         GITHUB_REPO_URL = 'https://github.com/aks-master/SciCalcAKS'
     }
 
@@ -36,9 +38,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', 'DockerHubCred') {
-                        sh "docker tag ${DOCKER_IMAGE_NAME} aks-master/${DOCKER_IMAGE_NAME}:latest"
-                        sh "docker push aks-master/${DOCKER_IMAGE_NAME}"
+                    withCredentials([string(credentialsId: 'DockerHubCred', variable: 'DOCKERHUB_TOKEN')]) {
+                        sh "echo \$DOCKERHUB_TOKEN | docker login -u ${DOCKER_HUB_USER} --password-stdin"
+                        sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_USER}/${DOCKER_IMAGE_NAME}:latest"
+                        sh "docker push ${DOCKER_HUB_USER}/${DOCKER_IMAGE_NAME}:latest"
                     }
                 }
             }
