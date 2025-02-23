@@ -61,13 +61,11 @@ pipeline {
             emailext(
                 subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
-                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> succeeded.</p>
-                    <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
+                    Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> succeeded.<br>
+                    <a href="${env.BUILD_URL}console">View Build Logs</a>
                 """,
                 to: "amit33301@gmail.com, abhishekse@outlook.com",
-                
-                mimeType: "text/html",
-                
+                mimeType: "text/html"
             )
         }
 
@@ -75,13 +73,11 @@ pipeline {
             emailext(
                 subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
-                    <p>Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> failed.</p>
-                    <p><a href="${env.BUILD_URL}console">View Build Logs</a></p>
+                    Build <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> failed.<br>
+                    <a href="${env.BUILD_URL}console">View Build Logs</a>
                 """,
                 to: "amit33301@gmail.com, abhishekse@outlook.com",
-                
-                mimeType: "text/html",
-                
+                mimeType: "text/html"
             )
         }
     }
