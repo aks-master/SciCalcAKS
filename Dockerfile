@@ -8,5 +8,6 @@ WORKDIR /app
 COPY target/SciCalcAKS-1.0-SNAPSHOT.jar /app/SciCalcAKS-1.0-SNAPSHOT.jar
 
 # Command to run the JAR file
-CMD ["java", "-jar", "SciCalcAKS-1.0-SNAPSHOT.jar"]
+CMD ["java", "--enable-preview", "-jar", "SciCalcAKS-1.0-SNAPSHOT.jar"]
+
 
