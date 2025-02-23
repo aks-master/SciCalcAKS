@@ -6,7 +6,7 @@ pipeline {
     
     environment {
         DOCKER_IMAGE_NAME = 'sci-calc-aks'
-        DOCKER_HUB_USER = 'amit33301'  // Update with your Docker Hub username
+        DOCKER_HUB_USER = 'aks00798'  // Update with your Docker Hub username
         GITHUB_REPO_URL = 'https://github.com/aks-master/SciCalcAKS'
     }
 
